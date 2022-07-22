@@ -1,2 +1,2 @@
 # shayna
-Belajar Vue
+Bahan belajar fullstack laravue
