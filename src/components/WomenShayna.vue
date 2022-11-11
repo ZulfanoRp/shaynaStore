@@ -6,9 +6,10 @@
                 <div class="col-lg-12 mt-5" v-if="products.length > 0">
                     <carousel class="product-slider" :items="3" :dots="false" :nav="false" :autoplay="true">
 
-                        <div class="product-item" v-for="itemProduct in products" :key="itemProduct.id">
+                        <div class="product-item" v-for="itemProduct in products" v-bind:key="itemProduct.id">
                             <div class="pi-pic">
                                 <img :src="itemProduct.galleries[0].photo" alt />
+                                <!-- <img src="img/mickey1.jpg" alt /> -->
                                 <ul>
                                     <li @click="saveCart(itemProduct.id, itemProduct.name, itemProduct.price, itemProduct.galleries[0].photo )" class="w-icon active">
                                         <!-- <router-link to="/cart"> -->
@@ -69,6 +70,14 @@ export default {
         .then(res => (this.products = res.data.data.data))
         // eslint-disable-next-line no-console
         .catch(err => console.log(err));
+
+        if (localStorage.getItem("cartUser")) {
+                try {
+                    this.cartUser = JSON.parse(localStorage.getItem("cartUser"));
+                } catch (e) {
+                    localStorage.removeItem("cartUser");
+                }
+        }
     },
      methods: {
         saveCart(idProduct, nameProduct, priceProduct, photoProduct) {
@@ -82,7 +91,9 @@ export default {
         this.cartUser.push(productStored);
         const parsed = JSON.stringify(this.cartUser);
         localStorage.setItem('cartUser', parsed);
-    }
+
+        window.location.reload();
+        }
     }
 };
 </script>
